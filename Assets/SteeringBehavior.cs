@@ -30,7 +30,6 @@ public class SteeringBehavior
         if(fDotF > 0.96f)   //如果目標向量已經近乎平行面向方向
         {
             fDotF = 1.0f;   //就當作他已經面向目標
-            //暫時沒用,把資料存進去方便以後取用
             data.m_vCurrentVector = vec;
             data.m_fTempTurnForce = 0.0f;
             data.m_fRot = 0.0f;
@@ -61,7 +60,7 @@ public class SteeringBehavior
         }
         if (fDist < data.m_fDeSpeedRange)   //如果已到達減速半徑裡
         {
-            if(data.m_Speed > 1.0f)     //且有一定速度
+            if(data.m_Speed > 5.0f)     //且有一定速度
             {
                 data.m_fMoveForce = -(1.0f - fDist / data.m_fDeSpeedRange) * Time.deltaTime * 10.0f; //使其減速
             }
@@ -84,26 +83,40 @@ public class SteeringBehavior
         else
             fAcc2 = -(1.0f - fAcc2);*/
         Vector3 vOriF = vf;
-        vf = data.m_vCurrentVector;
-        vf = vf + vr * data.m_fTempTurnForce;
-        vf.Normalize();
-        data.m_Go.transform.forward = vf;
-        //還沒加最大轉向控制
-        //沒加碰撞偵測
-        //控制最小跟最大速度
-        data.m_Speed = data.m_Speed + data.m_fMoveForce;
-        if (data.m_Speed < 0.1f)
-        {
-            data.m_Speed = 0.1f;
-        }
-        else if (data.m_Speed > data.m_fMaxSpeed)
-        {
-            data.m_Speed = data.m_fMaxSpeed;
-        }
-        //開始移動
-        currentPos = currentPos + vf * data.m_Speed * Time.deltaTime;   //多乘了DeltaTime讓他慢點
-        data.m_Go.transform.position = currentPos;
+        
 
+        return true;
+    }
+    static public void Move(AIData data)
+    {
+        if (data.m_bMove)
+        {
+            Vector3 currentPos = data.m_Go.transform.position;
+            Vector3 vf = data.m_vCurrentVector;   //拿到物體的forward向量
+            Vector3 vr = data.m_Go.transform.right;
+            vf = vf + vr * data.m_fTempTurnForce;
+            vf.Normalize();
+            data.m_Go.transform.forward = vf;
+            //還沒加最大轉向控制
+            //沒加碰撞偵測
+            //控制最小跟最大速度
+            data.m_Speed = data.m_Speed + data.m_fMoveForce;
+            if (data.m_Speed < 0.1f)
+            {
+                data.m_Speed = 0.1f;
+            }
+            else if (data.m_Speed > data.m_fMaxSpeed)
+            {
+                data.m_Speed = data.m_fMaxSpeed;
+            }
+            //開始移動
+            currentPos = currentPos + vf * data.m_Speed * Time.deltaTime;   //多乘了DeltaTime讓他慢點
+            data.m_Go.transform.position = currentPos;
+        }
+        
+    }
+    static public bool CollisionAvoid()
+    {
         return true;
     }
 }

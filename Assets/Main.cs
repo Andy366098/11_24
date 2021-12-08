@@ -5,6 +5,7 @@ using UnityEngine;
 public class Main : MonoBehaviour
 {
     public GameObject m_Control;
+    public GameObject m_Target;
     private NPC m_Npc;
     private bool m_bAstar = false;
     void Start()
@@ -18,11 +19,11 @@ public class Main : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))    //滑鼠按下左鍵
+        /*if (Input.GetMouseButtonDown(0))    //滑鼠按下左鍵
         {
             Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);  //打個射線到目標點
             RaycastHit rh;
-            if (Physics.Raycast(r,out rh,1000.0f,1 << LayerMask.NameToLayer("Terrain")))
+            if (Physics.Raycast(r,out rh,1000.0f,1 << LayerMask.NameToLayer("Terrain"))) //如果在Terrain地形上
             {
                 //用Astar的，先暫時註解掉看看Seek可不可正常運作
                 //m_bAstar = AStar.mInstance.PerformAStar(m_Control.transform.position, rh.point);
@@ -32,7 +33,9 @@ public class Main : MonoBehaviour
                     
                 
             }
-        }
+        }*/
+        m_Npc.SetTarget(m_Target.transform.position);
+
         //if (m_bAstar)   //如果Astar成功
         //{
         //    List<Vector3> path = AStar.mInstance.GetPath();

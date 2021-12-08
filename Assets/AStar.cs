@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AStar 
 {
+    WayPointTerrain mTerrain;
     List<PathNode> mOpenList;
     List<PathNode> mCloseList;
 
@@ -11,6 +12,7 @@ public class AStar
     static public AStar mInstance; //Singleton
     public void Init()
     {
+        
         mOpenList = new List<PathNode>();
         mCloseList = new List<PathNode>();
         mPathList = new List<Vector3>();
