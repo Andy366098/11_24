@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class NPC : MonoBehaviour
 {
-    AIData m_Data;
+    public AIData m_Data;
     public int m_iCurrentPathPt;    //紀錄目前走到哪個WayPoint
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {   //初始配置
         m_Data = new AIData();
         m_Data.m_Speed = 0.0f;
-        m_Data.m_fArriveRange = 2.0f;
-        m_Data.m_fMaxSpeed = 2.5f;
+        m_Data.m_fArriveRange = 0.1f;
+        m_Data.m_fDeSpeedRange = 10.0f;
+        m_Data.m_fMaxSpeed = 10.0f;
         m_Data.m_fMaxRot = 5.0f;
         m_Data.m_Go = gameObject;
         m_Data.m_vTarget = transform.position;
@@ -39,7 +40,9 @@ public class NPC : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(m_Data.m_vTarget, m_Data.m_fArriveRange);  //畫出目標點到達半徑
-            
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(m_Data.m_vTarget, m_Data.m_fDeSpeedRange);  //畫出目標點減速半徑
+
         }
     }
 }

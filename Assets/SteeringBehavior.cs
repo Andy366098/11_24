@@ -63,16 +63,16 @@ public class SteeringBehavior
         {
             if(data.m_Speed > 1.0f)     //且有一定速度
             {
-                data.m_fMoveForce = -(1.0f - fDist / data.m_fDeSpeedRange) * 10.0f; //使其減速
+                data.m_fMoveForce = -(1.0f - fDist / data.m_fDeSpeedRange) * Time.deltaTime * 10.0f; //使其減速
             }
             else
             {
-                data.m_fMoveForce = fDotF * 10.0f;  //原速
+                data.m_fMoveForce = fDotF;  //原速
             }
         }
         else
         {
-            data.m_fMoveForce = fDotF * 10.0f;//原速
+            data.m_fMoveForce = fDotF;//原速
         }
 
         data.m_bMove = true;
@@ -84,13 +84,14 @@ public class SteeringBehavior
         else
             fAcc2 = -(1.0f - fAcc2);*/
         Vector3 vOriF = vf;
+        vf = data.m_vCurrentVector;
         vf = vf + vr * data.m_fTempTurnForce;
         vf.Normalize();
         data.m_Go.transform.forward = vf;
         //還沒加最大轉向控制
         //沒加碰撞偵測
         //控制最小跟最大速度
-        data.m_Speed = data.m_Speed + data.m_fMoveForce * Time.deltaTime;
+        data.m_Speed = data.m_Speed + data.m_fMoveForce;
         if (data.m_Speed < 0.1f)
         {
             data.m_Speed = 0.1f;
@@ -100,7 +101,7 @@ public class SteeringBehavior
             data.m_Speed = data.m_fMaxSpeed;
         }
         //開始移動
-        currentPos = currentPos + vf * data.m_Speed;
+        currentPos = currentPos + vf * data.m_Speed * Time.deltaTime;   //多乘了DeltaTime讓他慢點
         data.m_Go.transform.position = currentPos;
 
         return true;

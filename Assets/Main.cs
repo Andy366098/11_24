@@ -18,29 +18,34 @@ public class Main : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))    //滑鼠按下左鍵
         {
-            Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);  //打個射線到目標點
             RaycastHit rh;
             if (Physics.Raycast(r,out rh,1000.0f,1 << LayerMask.NameToLayer("Terrain")))
             {
-                m_bAstar = AStar.mInstance.PerformAStar(m_Control.transform.position, rh.point);
-                m_Npc.m_iCurrentPathPt = 0;
+                //用Astar的，先暫時註解掉看看Seek可不可正常運作
+                //m_bAstar = AStar.mInstance.PerformAStar(m_Control.transform.position, rh.point);
+                //m_Npc.m_iCurrentPathPt = 0;
+                
+                m_Npc.SetTarget(rh.point);
+                    
+                
             }
         }
-        if (m_bAstar)
-        {
-            List<Vector3> path = AStar.mInstance.GetPath();
-            int iFinal = path.Count - 1;
-            int i;
-            for (i = iFinal; i >= m_Npc.m_iCurrentPathPt; i--)
-            {
-                Vector3 sPos = path[i];
-                Vector3 cPos = m_Control.transform.position;
-                m_Npc.m_iCurrentPathPt = i;
-                m_Npc.SetTarget(sPos);
-                break;
-            }
-        }
+        //if (m_bAstar)   //如果Astar成功
+        //{
+        //    List<Vector3> path = AStar.mInstance.GetPath();
+        //    int iFinal = path.Count - 1;
+        //    int i;
+        //    for (i = iFinal; i >= m_Npc.m_iCurrentPathPt; i--)
+        //    {
+        //        Vector3 sPos = path[i];
+        //        Vector3 cPos = m_Control.transform.position;
+        //        m_Npc.m_iCurrentPathPt = i;
+        //        m_Npc.SetTarget(sPos);
+        //        break;
+        //    }
+        //}
     }
 }
