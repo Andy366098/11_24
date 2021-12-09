@@ -13,10 +13,10 @@ public class SaveWP : MonoBehaviour
         for(int i = 0;i < gos.Length; i++)
         {
             WP wp = gos[i].GetComponent<WP>();  //獲取物件上的WP的Script
-            sw.Write($"{wp.name},{wp.neibors.Count}");
+            sw.Write($"{wp.name},{wp.neibors.Count},");
             for(int j = 0;j < wp.neibors.Count; j++)
             {
-                sw.Write($",{wp.neibors[j].name}");
+                sw.Write($"{wp.neibors[j].name},");
             }
             sw.WriteLine();
         }

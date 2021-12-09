@@ -10,9 +10,9 @@ public class AStar
 
     List<Vector3> mPathList;
     static public AStar mInstance; //Singleton
-    public void Init()
+    public void Init(WayPointTerrain terrain)
     {
-        
+        mTerrain = terrain;
         mOpenList = new List<PathNode>();
         mCloseList = new List<PathNode>();
         mPathList = new List<Vector3>();
@@ -62,8 +62,8 @@ public class AStar
     //A*演算法，start跟endNode還沒改成讀取檔案的資料
     public bool PerformAStar(Vector3 startPos,Vector3 endPos)
     {
-        PathNode startNode = new PathNode();
-        PathNode endNode = new PathNode();
+        PathNode startNode = mTerrain.GetNodeFromPosition(startPos);
+        PathNode endNode = mTerrain.GetNodeFromPosition(endPos);
         if(startNode == null || endNode == null)
         {
             Debug.Log("在AStar地圖上找不到節點");
@@ -76,7 +76,7 @@ public class AStar
         }
         mOpenList.Clear();
         mCloseList.Clear();
-        //
+        mTerrain.ClearAStarInfo();  //清除前一次AStar的資料
         PathNode currentNode;
         PathNode newNode;
         mOpenList.Add(startNode);
@@ -109,12 +109,12 @@ public class AStar
                 }
                 ///
                 newNode.mParent = currentNode;
-                newNode.mfG = newG;
+                newNode.mfG = newG;     //將Cost from Start設為新的
                 distance = endNode.mPos - newNode.mPos;
-                newNode.mfH = distance.magnitude;
+                newNode.mfH = distance.magnitude;   //Cost to Goal
                 newNode.mfF = newNode.mfG + newNode.mfH;
-                newNode.pathNodeState = PathNodeState.NODE_OPENED;
-                mOpenList.Add(newNode);
+                newNode.pathNodeState = PathNodeState.NODE_OPENED;  //將點的狀態設為OPPENED
+                mOpenList.Add(newNode); //並加入Open List
             }
             currentNode.pathNodeState = PathNodeState.NODE_CLOSED;
         }

@@ -15,9 +15,9 @@ public class PathNode       //用來存Astar的WayPoint的資料
 
     public Vector3 mPos;
     public PathNode mParent;
-    public float mfG;
-    public float mfH;
-    public float mfF;
+    public float mfG;   //Cost from Start
+    public float mfH;   //Cost to Goal
+    public float mfF;   //Total Cost
     public PathNodeState pathNodeState;
 }
     

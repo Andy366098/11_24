@@ -44,7 +44,7 @@ public class NPC : MonoBehaviour
             Gizmos.DrawWireSphere(m_Data.m_vTarget, m_Data.m_fArriveRange);  //畫出目標點到達半徑
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(m_Data.m_vTarget, m_Data.m_fDeSpeedRange);  //畫出目標點減速半徑
-            Gizmos.color = Color.blue;
+            Gizmos.color = Color.magenta;
             Vector3 target = m_Data.m_vTarget;
             Vector3 go = transform.position;
             go.y = target.y;
