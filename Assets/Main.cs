@@ -28,7 +28,7 @@ public class Main : MonoBehaviour
             {
                 m_bAstar = AStar.mInstance.PerformAStar(m_Control.transform.position, rh.point);
                 m_Npc.m_iCurrentPathPt = 0;
-                //m_Npc.SetTarget(rh.point);    //這行是改成只有Seek
+                //m_Npc.SetTarget(rh.point);    //把上兩行刪掉改成這個就只有Seek
                     
                 
             }
@@ -42,7 +42,31 @@ public class Main : MonoBehaviour
             int i;
             for (i = iFinal; i >= m_Npc.m_iCurrentPathPt; i--)
             {
+                //如果打個射線會撞到牆就continue，直到不會撞到牆才走這個直線距離
+                //否則走前一個點的直線距離
                 Vector3 sPos = path[i];
+                Vector3 cPos = m_Control.transform.position;
+                if (Physics.Linecast(cPos, sPos, 1 << LayerMask.NameToLayer("Wall")))
+                {
+                    continue;
+                }
+                //嘗試改成打三條失敗，還是會撞到
+                //Vector3 sPos = path[i];
+                //Vector3 leftSPos = sPos - m_Control.transform.right * 1.0f;
+                //Vector3 rightSPos = sPos + m_Control.transform.right * 1.0f;
+                //Vector3 cPos = m_Control.transform.position;
+                //Vector3 leftCPos = cPos - m_Control.transform.right * 1.0f;
+                //Vector3 rightCPos = cPos + m_Control.transform.right * 1.0f;
+                //if (Physics.Linecast(cPos, sPos, 1 << LayerMask.NameToLayer("Wall")) ||
+                //    Physics.Linecast(leftCPos, leftSPos, 1 << LayerMask.NameToLayer("Wall")) ||
+                //    Physics.Linecast(rightCPos, rightSPos, 1 << LayerMask.NameToLayer("Wall")))
+                //{
+                //    continue;
+                //}
+                //嘗試用BoxCast失敗
+                /*if (Physics.BoxCast(cPos,new Vector3(1.0f,1.0f,1.0f),sPos - cPos,Quaternion.identity,100.0f,1 << LayerMask.NameToLayer("Wall"))){
+                    continue;
+                }*/
                 m_Npc.m_iCurrentPathPt = i;
                 m_Npc.SetTarget(sPos);
                 break;
@@ -60,7 +84,7 @@ public class Main : MonoBehaviour
             for (i = 0; i < iCount; i++)
             {
                 Vector3 sPos = path[i];
-                sPos.y += 1.0f;
+                sPos.y += 1.0f; //浮空一點的線
                 Vector3 ePos = path[i + 1];
                 ePos.y += 1.0f;
                 Gizmos.DrawLine(sPos, ePos);

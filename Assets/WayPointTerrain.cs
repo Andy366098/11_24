@@ -40,16 +40,23 @@ public class WayPointTerrain
         PathNode rnode = null;
         PathNode node;
         int iC = mNodeList.Count;
-        float max = 100000.0f;
+        Vector3 vec = mNodeList[0].mPos - pos;  //得到第一個路徑點到目標點的向量
+        vec.y = 0.0f;   //濾掉y
+        float max = vec.magnitude;  //得到第一個向量長度，設為最大值，反正小於等於他都會蓋過去
         if (mNodeList != null)
         {
             for (int i = 0; i < iC; i++)
             {
                 node = mNodeList[i];
-                Vector3 vec = node.mPos - pos;  //路徑點到目標點的向量
+                //如果打個射線會撞到牆就不管
+                if (Physics.Linecast(pos,node.mPos,1 << LayerMask.NameToLayer("Wall")))  
+                {
+                    continue;
+                }
+                vec = node.mPos - pos;  //路徑點到目標點的向量
                 vec.y = 0.0f;   //濾掉y
                 float mag = vec.magnitude;  //得到向量長度
-                if (mag < max)  //比較得出最靠近的路徑點
+                if (mag <= max)  //比較得出最靠近的路徑點
                 {
                     max = mag;
                     rnode = node;
