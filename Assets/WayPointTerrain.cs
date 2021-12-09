@@ -43,7 +43,7 @@ public class WayPointTerrain
         float max = 100000.0f;
         if (mNodeList != null)
         {
-            for (int i = 1; i < iC; i++)
+            for (int i = 0; i < iC; i++)
             {
                 node = mNodeList[i];
                 Vector3 vec = node.mPos - pos;  //路徑點到目標點的向量
@@ -75,10 +75,10 @@ public class WayPointTerrain
             //Debug.Log(s);
             lineIndex++;    //行的索引+1
             string[] ss = s.Split(','); //用字串裡的,分隔=>每一行結尾也要有逗號否則辨識會出問題
-            /*foreach(string a in ss)
+            foreach(string a in ss)
             {
                 Debug.Log(a);
-            }*/
+            }
             PathNode pCurrent = null;
             for (int i = 0; i < mNodeList.Count; i++)
             {

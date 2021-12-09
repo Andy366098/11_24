@@ -59,10 +59,11 @@ public class AStar
         }
         mPathList.Add(endPos);
     }
-    //A*演算法，start跟endNode還沒改成讀取檔案的資料
+    //A*演算法
     public bool PerformAStar(Vector3 startPos,Vector3 endPos)
     {
-        PathNode startNode = mTerrain.GetNodeFromPosition(startPos);
+        //讀取檔案的資料獲得最靠近的路徑點
+        PathNode startNode = mTerrain.GetNodeFromPosition(startPos);    
         PathNode endNode = mTerrain.GetNodeFromPosition(endPos);
         if(startNode == null || endNode == null)
         {
