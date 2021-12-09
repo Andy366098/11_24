@@ -80,11 +80,11 @@ public class AStar
         mTerrain.ClearAStarInfo();  //清除前一次AStar的資料
         PathNode currentNode;
         PathNode newNode;
-        mOpenList.Add(startNode);
-        while (mOpenList.Count > 0)
+        mOpenList.Add(startNode);   //先加入起始點
+        while (mOpenList.Count > 0) //如果OpenList裡還有Node
         {
-            currentNode = GetBestNode();
-            if(currentNode == endNode)
+            currentNode = GetBestNode();    //獲得OpenList裡最小Cost的點
+            if(currentNode == endNode)  //如果現在的點就是終點就建立路徑
             {
                 BuildPath(startPos,endPos,startNode,endNode);
                 return true;
@@ -92,16 +92,17 @@ public class AStar
             Vector3 distance;
             for(int i = 0; i < currentNode.neibors.Count; i++)
             {
-                newNode = currentNode.neibors[i];
+                newNode = currentNode.neibors[i];   //下一步要走的就是鄰居
                 distance = currentNode.mPos - newNode.mPos;
-                float newG = newNode.mfG + distance.magnitude;
-                //按照A*寫，但這樣Continue只能判定到內圈
+                //鄰居新的Cost from Start就是起步的點的CFS加上到鄰居的Travel Cost
+                float newG = currentNode.mfG + distance.magnitude;  
+                //按照A*寫，但這樣Continue只能判定到內圈，因此跟老師一樣用狀態表示Close
                 /*for (int i = 0;i < mOpenList.Count; i++)
                 {
                     if (currentNode == mOpenList[i] && currentNode.mfG <= newG)
                         continue;
                 }*/
-                ///這邊跟老師的有點不同，用的是王老師講解的，想看看有哪裡不同
+                ///這邊跟老師的有點不同，用的是王老師講解的，想看看有哪裡不同，結果好像一樣
                 if (newNode.pathNodeState == PathNodeState.NODE_OPENED
                     || newNode.pathNodeState == PathNodeState.NODE_CLOSED)
                 {
