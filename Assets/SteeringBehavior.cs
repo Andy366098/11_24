@@ -115,9 +115,14 @@ public class SteeringBehavior
         }
         
     }
-    static public bool CollisionAvoid()
+    static public bool CollisionAvoid(AIData data)
     {
-
+        //利用Main管理器獲得障礙物資訊
+        List<Obstacle> m_AvoidTargets = Main.m_Instance.GetObstacles();
+        //先將常要操作的物件拿出來
+        Transform ct = data.m_Go.transform;
+        Vector3 cPos = ct.position;
+        Vector3 cForward = ct.forward;
         return true;
     }
 }

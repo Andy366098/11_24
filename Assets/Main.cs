@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class Main : MonoBehaviour
 {
+    public static Main m_Instance;
     public GameObject m_Control;
     public GameObject m_Target;
     private NPC m_Npc;
     private bool m_bAstar = false;
+    private List<Obstacle> m_Obstacles;
+    private void Awake()
+    {
+        m_Instance = this;
+    }
     void Start()
     {
         WayPointTerrain wayPointTerrain = new WayPointTerrain();
@@ -15,8 +21,21 @@ public class Main : MonoBehaviour
         AStar aStar = new AStar();
         aStar.Init(wayPointTerrain);
         m_Npc = m_Control.GetComponent<NPC>();
+        //增加障礙物進List
+        m_Obstacles = new List<Obstacle>();
+        GameObject[] gos = GameObject.FindGameObjectsWithTag("Obstacle");
+        if (gos != null || gos.Length > 0)
+        {
+            foreach (GameObject go in gos)
+            {
+                m_Obstacles.Add(go.GetComponent<Obstacle>());
+            }
+        }
     }
-
+    public List<Obstacle> GetObstacles()
+    {
+        return m_Obstacles;
+    }
     // Update is called once per frame
     void Update()
     {
